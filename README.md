@@ -1,10 +1,24 @@
 # 🛡️ DataVault Nigeria
 
-https://datavault-bay.vercel.app/
+[Live Demo](https://datavault-bay.vercel.app/)
 
-### OAuth-Powered Personal Data Infrastructure for NDPR Compliance
+**OAuth-Powered Personal Data Infrastructure for NDPR Compliance**
 
-> **Building trust in Nigeria's digital economy by giving citizens control over their personal data while helping organizations stay NDPR compliant.**
+> Building trust in Nigeria's digital economy by giving citizens control over their personal data while helping organizations stay NDPR compliant.
+
+---
+
+## 📦 How to Run the DataVault Chrome Extension
+
+```bash
+# Clone the repository
+git clone https://github.com/0x-stone/DataVault.git
+
+# Open Chrome extension management:
+# 1. Go to chrome://extensions
+# 2. Enable Developer Mode
+# 3. Click "Load unpacked" and select this project's extension folder
+```
 
 ---
 
@@ -117,7 +131,7 @@ window.location.href = `https://datavault-bay.vercel.app/authorize?
 // User approves → redirected back with code
 
 // 3. Exchange code for token
-const response = await fetch('/authorize/token', {
+const response = await fetch('https://datavault.0xstone.xyz/authorize/authorize/token', {
   method: 'POST',
   headers: { 'x-vault-key': 'your_secret_key' },
   body: JSON.stringify({ company_id, code })
@@ -126,7 +140,7 @@ const response = await fetch('/authorize/token', {
 const { access_token } = await response.json();
 
 // 4. Access data
-const data = await fetch('/api/authorize/data', {
+const data = await fetch('https://datavault.0xstone.xyz/authorize/data', {
   headers: { 'Authorization': `Bearer ${access_token}` }
 });
 ```
@@ -172,7 +186,7 @@ FRONTEND APPLICATIONS:
 │   ├── Popup UI (Results Display)
 │   └── NDPR Compliance Engine
 │
-└── WhatsApp Bot (https://wwebjs.dev/guide/)
+└── WhatsApp Bot (wwebjs.dev)
     ├── Message Handler
     ├── RAG System (NDPR 2023 PDF)
     └── Response Generator
