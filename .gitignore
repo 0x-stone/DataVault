@@ -1,0 +1,151 @@
+# -------------------------
+# GLOBAL
+# -------------------------
+.DS_Store
+Thumbs.db
+*.swp
+*.swm
+*.swo
+*.sw?
+*.tmp
+*.bak
+*.backup
+*.local
+*.lock
+*.pid
+*.seed
+*.orig
+
+# -------------------------
+# ENVIRONMENT FILES
+# -------------------------
+.env
+.env.*
+*.env.local
+*.env.development
+*.env.production
+*.env.test
+
+# -------------------------
+# LOGS
+# -------------------------
+logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+# -------------------------
+# NODE / JAVASCRIPT / TYPESCRIPT
+# -------------------------
+node_modules/
+bower_components/
+
+# Build outputs
+dist/
+dist-ssr/
+build/
+out/
+coverage/
+.nyc_output/
+
+# Temporary caches
+.cache/
+.parcel-cache/
+.next/
+.svelte-kit/
+.nuxt/
+storybook-static/
+
+# Turbo / Nx / Monorepo
+.turbo/
+.nx/
+.pnpm-store/
+.eslintcache
+
+# Package managers
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# -------------------------
+# PYTHON
+# -------------------------
+__pycache__/
+py_cache/
+*.pyc
+*.pyo
+*.pyd
+
+# Virtual environments
+env/
+venv/
+.venv/
+ENV/
+env.bak/
+venv.bak/
+
+# Build outputs
+build/
+develop-eggs/
+.eggs/
+dist/
+downloads/
+sdist/
+*.egg-info/
+*.egg
+
+# Python tooling
+.python-version
+.mypy_cache/
+.pytest_cache/
+.pybuilder/
+.tox/
+coverage.xml
+
+# -------------------------
+# SERVER / EXPRESS / API
+# -------------------------
+uploads/
+*.sqlite
+*.sqlite3
+*.db
+
+# PM2
+.pm2/
+
+# -------------------------
+# DOCKER
+# -------------------------
+docker-data/
+docker-compose.override.yml
+.dockerignore
+
+# -------------------------
+# EDITORS / OS FILES
+# -------------------------
+# VSCode
+.vscode/*
+!.vscode/extensions.json
+!.vscode/settings.json
+!.vscode/tasks.json
+
+# JetBrains
+.idea/
+*.iml
+
+# Windows
+ehthumbs.db
+desktop.ini
+
+# -------------------------
+# MISC
+# -------------------------
+*.pem
+*.crt
+*.key
+.cache/
+temp/
+tmp/

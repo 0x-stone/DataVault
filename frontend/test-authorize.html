@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Test Authorization Page</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            max-width: 800px;
+            margin: 50px auto;
+            padding: 20px;
+            background: #f5f5f5;
+        }
+        .container {
+            background: white;
+            padding: 30px;
+            border-radius: 10px;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+        }
+        .form-group {
+            margin-bottom: 20px;
+        }
+        label {
+            display: block;
+            margin-bottom: 5px;
+            font-weight: bold;
+            color: #555;
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+            font-size: 14px;
+            box-sizing: border-box;
+        }
+        textarea {
+            resize: vertical;
+            min-height: 80px;
+        }
+        button {
+            background: #0ea5e9;
+            color: white;
+            padding: 12px 30px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+        }
+        button:hover {
+            background: #0284c7;
+        }
+        .output {
+            margin-top: 20px;
+            padding: 15px;
+            background: #f8f9fa;
+            border-radius: 5px;
+            word-break: break-all;
+        }
+        .copy-btn {
+            background: #10b981;
+            margin-top: 10px;
+        }
+        .info {
+            background: #e0f2fe;
+            padding: 15px;
+            border-radius: 5px;
+            margin-bottom: 20px;
+            border-left: 4px solid #0ea5e9;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>🧪 Authorization Page URL Generator</h1>
+        <p>Fill in the form below to generate a test URL for the authorization consent page.</p>
+        
+        <div class="info">
+            <strong>Note:</strong> You must be logged in to access the authorization page. 
+            Make sure your frontend is running on <code>http://localhost:5173</code>
+        </div>
+
+        <form id="authForm">
+            <div class="form-group">
+                <label for="company_id">Company ID *</label>
+                <input type="text" id="company_id" name="company_id" 
+                       placeholder="cmp_abc123xyz" required
+                       pattern="^cmp_[A-Za-z0-9]+$">
+                <small>Format: cmp_ followed by alphanumeric characters</small>
+            </div>
+
+            <div class="form-group">
+                <label for="requested_data">Requested Data *</label>
+                <select id="requested_data" name="requested_data" multiple required>
+                    <option value="fullname">Full Name</option>
+                    <option value="email">Email</option>
+                    <option value="phone">Phone</option>
+                    <option value="bvn">BVN</option>
+                    <option value="nin">NIN</option>
+                    <option value="dob">Date of Birth</option>
+                    <option value="address">Address</option>
+                    <option value="nin_front">NIN Front</option>
+                    <option value="nin_back">NIN Back</option>
+                    <option value="passport">Passport</option>
+                    <option value="driver_license">Driver License</option>
+                    <option value="utility_bill">Utility Bill</option>
+                </select>
+                <small>Hold Ctrl/Cmd to select multiple fields</small>
+            </div>
+
+            <div class="form-group">
+                <label for="purpose">Purpose *</label>
+                <textarea id="purpose" name="purpose" 
+                          placeholder="Account verification and KYC compliance" 
+                          minlength="10" maxlength="300" required></textarea>
+                <small>10-300 characters describing why the data is needed</small>
+            </div>
+
+            <div class="form-group">
+                <label for="duration">Duration (in seconds) *</label>
+                <select id="duration" name="duration" required>
+                    <option value="86400">1 day (86400 seconds)</option>
+                    <option value="604800">7 days (604800 seconds)</option>
+                    <option value="2592000" selected>30 days (2592000 seconds)</option>
+                    <option value="7776000">90 days (7776000 seconds)</option>
+                    <option value="31536000">365 days (31536000 seconds)</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <label for="redirect_uri">Redirect URI *</label>
+                <input type="url" id="redirect_uri" name="redirect_uri" 
+                       placeholder="https://example.com/callback" required
+                       pattern="^https://.*">
+                <small>Must be HTTPS and registered in company's redirect URIs</small>
+            </div>
+
+            <div class="form-group">
+                <label for="state">State (Optional)</label>
+                <input type="text" id="state" name="state" 
+                       placeholder="abc123xyz"
+                       pattern="^[A-Za-z0-9-_]+$" minlength="8" maxlength="128">
+                <small>Alphanumeric with - and _, 8-128 characters</small>
+            </div>
+
+            <button type="submit">Generate Authorization URL</button>
+        </form>
+
+        <div id="output" class="output" style="display: none;">
+            <h3>Generated URL:</h3>
+            <p id="urlOutput"></p>
+            <button class="copy-btn" onclick="copyToClipboard()">Copy URL</button>
+            <button class="copy-btn" onclick="openInNewTab()">Open in New Tab</button>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('authForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const formData = new FormData(e.target);
+            const params = new URLSearchParams();
+            
+            // Get company_id
+            params.set('company_id', formData.get('company_id'));
+            
+            // Get requested_data (handle multiple select)
+            const requestedData = Array.from(document.getElementById('requested_data').selectedOptions)
+                .map(option => option.value)
+                .join(',');
+            params.set('requested_data', requestedData);
+            
+            // Get other fields
+            params.set('purpose', formData.get('purpose'));
+            params.set('duration', formData.get('duration'));
+            params.set('redirect_uri', formData.get('redirect_uri'));
+            
+            if (formData.get('state')) {
+                params.set('state', formData.get('state'));
+            }
+            
+            const baseUrl = 'http://localhost:5173/authorize';
+            const fullUrl = `${baseUrl}?${params.toString()}`;
+            
+            document.getElementById('urlOutput').textContent = fullUrl;
+            document.getElementById('output').style.display = 'block';
+            
+            // Store for copy function
+            window.generatedUrl = fullUrl;
+        });
+        
+        function copyToClipboard() {
+            navigator.clipboard.writeText(window.generatedUrl).then(() => {
+                alert('URL copied to clipboard!');
+            });
+        }
+        
+        function openInNewTab() {
+            window.open(window.generatedUrl, '_blank');
+        }
+    </script>
+</body>
+</html>
+
+
+
+
+
+

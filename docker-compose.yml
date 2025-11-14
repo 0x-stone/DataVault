@@ -1,0 +1,71 @@
+services:
+  # MongoDB Database
+  mongodb:
+    image: mongo:7.0
+    container_name: datavault-mongodb
+    restart: unless-stopped
+    env_file:
+      - .env
+    ports:
+      - "27017:27017"
+    volumes:
+      - mongodb_data:/data/db
+      - mongodb_config:/data/configdb
+    networks:
+      - datavault-network
+
+
+  ndpa-extension:
+    build: ./extension/backend
+    container_name: ndpa-extension
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    env_file:
+      - .env
+    depends_on:
+      mongodb:
+        condition: service_started
+    volumes:
+      - ./ndpa_qa_vectorstore:/app/ndpa_qa_vectorstore
+    networks:
+      - datavault-network
+
+  whatsapp:
+    build: ./whatsapp-service
+    container_name: whatsapp
+    restart: unless-stopped
+    ports:
+      - "6000:6000"
+    env_file:
+      - .env
+    depends_on:
+      mongodb:
+        condition: service_started
+    networks:
+      - datavault-network
+
+  datavault:
+    build: ./backend
+    container_name: datavault
+    restart: unless-stopped
+    ports:
+      - "3000:3000"
+    env_file:
+      - .env
+    volumes:
+      - ./storage:/app/storage
+      - ./logs:/app/logs
+    depends_on:
+      mongodb:
+        condition: service_started
+    networks:
+      - datavault-network
+
+volumes:
+  mongodb_data:
+  mongodb_config:
+  
+networks:
+  datavault-network:
+    driver: bridge

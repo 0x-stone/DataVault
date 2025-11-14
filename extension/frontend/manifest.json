@@ -1,0 +1,36 @@
+{
+  "manifest_version": 3,
+  "name": "DataVault - NDPA Compliance Scanner",
+  "version": "1.0.0",
+  "description": "Scan and analyze privacy policies for NDPA and NDPR compliance. Stay informed about your data rights.",
+  "permissions": [
+    "activeTab",
+    "storage"
+  ],
+  "host_permissions": [
+    "<all_urls>"
+  ],
+  "content_scripts": [
+    {
+      "matches": ["<all_urls>"],
+      "js": ["content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "action": {
+    "default_popup": "popup.html",
+     "default_icon": "icons/icon.png"
+  },
+  "icons": {
+  "16": "icons/icon.png",
+  "48": "icons/icon.png",
+  "128": "icons/icon.png"
+},
+  "web_accessible_resources": [
+    {
+      "resources": ["icons/*", "styles/*"],
+      "matches": ["<all_urls>"]
+    }
+  ]
+}
+
