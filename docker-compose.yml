@@ -46,7 +46,7 @@ services:
       - datavault-network
 
   datavault:
-    build: ./backend
+    build: ./app/backend
     container_name: datavault
     restart: unless-stopped
     ports:

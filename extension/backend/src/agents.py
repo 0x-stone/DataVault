@@ -572,8 +572,6 @@ def calculate_compliance_score(cleaned_result):
 
 
 async def web_chunker_node(url):
-
-
     cached, cached_result = await link_cached(url)
     if cached:
         logger.info("Cache hit for %s", url)
